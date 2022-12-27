@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -10,7 +11,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {
+mongoose.connect(`${process.env.URL}todolistDB`, {
   useNewUrlParser: true,
 });
 
@@ -121,6 +122,11 @@ app.post("/delete", (req, res) => {
   }
 });
 
-app.listen(3001, () => {
+let port = process.env.PORT;
+if(port == null || port == ""){
+  port = 3000;
+}
+
+app.listen(port, () => {
   console.log("Server Started");
 });
